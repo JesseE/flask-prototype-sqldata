@@ -1,0 +1,40 @@
+{% extends "index.html" %}
+
+{% block content %}
+<h1>Welcome to Flask!</h1>
+<br>
+<p>Click <a href="/logout">here</a> to logout.</p>
+<br><br>
+<div>
+    <h3>Search:</h3>
+    <form method="POST" action="{{ url_for('search_people') }}">
+        <input type="text" placeholder="search first name" name="first_name" value="{{request.form.first_name}}">
+        <input class="btn btn-default" type="submit" value="search first names">
+    </form>
+</div>
+<div class="search-results">
+    {% for item in results %}
+    <div class="card">
+        <div class="card-block">
+            <h1>name: {{ item.first_name }} {{ item.last_name }}</h1>
+            <h2>ip: {{ item.ip_address }}</h2>
+            <h3>email: {{ item.email }}</h3>
+            <h4>gender: {{ item.gender }}</h4>
+            <p>id: {{item.id}}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<style>
+    .search-results {
+        display: flex;
+    }
+    .card {
+        display: flex;
+        width: 25rem;
+        background: lightgrey;
+        margin: 1rem;
+        padding: 2rem;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Welcome to Flask!</h1>
+<br>
+<p>Current user: {{user}}</p>
+<p>Click <a href="/logout">here</a> to logout.</p>
+<br><br>
+<div>
+     <form method="POST" action="{{ url_for('add_person')}}" enctype="multipart/form-data">
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="first_name" name="first_name" value="{{
+            request.form.first_name }}" required>
+            <input class="form-control" type="text" placeholder="last_name" name="last_name" value="{{
+            request.form.last_name }}">
+            <input class="form-control" type="text" placeholder="ip_address" name="ip_address" value="{{
+            request.form.ip_address }}">
+            <input class="form-control" type="text" placeholder="email" name="email" value="{{
+            request.form.email }}">
+            <input class="form-control" type="text" placeholder="gender" name="gender" value="{{
+            request.form.gender }}">
+            <input class="form-control" type="text" placeholder="id" name="id" value="{{
+            request.form.ids }}" required>            
+            <input class="btn btn-default" type="submit" value="create person">
+        </div>
+    </form>
+    <form method="POST" action="{{url_for('add_post')}}" enctype="multipart/form-data">
+        <div class="form-group">
+            <input class="form-control" type="text"" placholder="blog post title" name="blog_title" 
+            value="{{ request.form.blog_title }}">
+            <textarea class="form-control form-control-high" type="text" placeholder="blog post" name="blog_post"
+            value="{{ request.form.blog_post }}"></textarea>
+            <input class="btn btn-default" type="submit" value="post blog item">
+        </div>
+    </form>
+</div>
+<div>
+    <h3>Search:</h3>
+    <form method="POST" action="{{ url_for('search_people') }}">
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="search first name" name="search_query" value="{{request.form.search_query}}">
+            <input class="btn btn-default" type="submit" value="search name">
+        </div>
+    </form>
+</div>
+<div class="search-results">
+    {% for item in persons %}
+    <div class="card">
+        <div class="card-block">
+            <h1>name: {{ item.first_name }} {{ item.last_name }}</h1>
+            <h2>ip: {{ item.ip_address }}</h2>
+            <h3>email: {{ item.email }}</h3>
+            <h4>gender: {{ item.gender }}</h4>
+            <p>id: {{item.id}}</p>
+        </div>
+    </div>
+     <div>
+        <h2>edit post</h2>
+        <form method="POST" action="{{url_for('.delete_person', id=item.id)}}">
+            <input type="submit" class="btn btn-danger" value="Remove">    
+        </form> 
+        <form method="POST" action="{{url_for('.update_values_people', id=item.id)}}">
+            <input class="form-control" type="text" name="first_name" placeholder="change firstname" vsalue="{{request.form.first_name}}">
+            <input type="submit" class="btn btn-warning" value="Update">
+        </form>    
+    </div>
+    {% endfor %}
+</div>
+<div class="search-results">
+    {% for item in results %}
+    <div class="card">
+        <div class="card-block">
+            <h1>name: {{ item.first_name }} {{ item.last_name }}</h1>
+            <h2>ip: {{ item.ip_address }}</h2>
+            <h3>email: {{ item.email }}</h3>
+            <h4>gender: {{ item.gender }}</h4>
+            <p>id: {{item.id}}</p>
+        </div>
+    </div>
+    <div>
+        <h2>edit post</h2>
+        <form method="POST" action="{{url_for('.delete_person', id=item.id)}}">
+            <input type="submit" class="btn btn-danger" value="Remove">    
+        </form> 
+        <form method="POST" action="{{url_for('.update_values_people', id=item.id)}}">
+            <input class="form-control" type="text" name="first_name" placeholder="change firstname" vsalue="{{request.form.first_name}}">
+            <input type="submit" class="btn btn-warning" value="Update">
+        </form>    
+    </div>
+       
+    {% endfor %}
+</div>
+<div class="search-results">
+    {% for post in blogPost %}
+        <div class="card">
+            <div class="card-block">
+                <h1>{{ post.blog_post_title }}</h1>
+                <h2>{{ post.author }}</h2>
+                <p>{{ post.blog_post }}</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+<div class="search-results">
+    {{posts}}
+    {% for post in posts %}
+        <div class="card">
+            <div class="card-block">
+                <h1>{{ post.title }}</h1>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+<style>
+
+    .form-control-high {
+        height: 250px !important;
+    }
+    .form-group {
+        display: flex;
+        width: 100%;
+        
+    }
+    .form-control {
+        display: flex;
+    }
+    .search-results {
+        display: flex;
+        width: 100%;
+        flex-flow: row wrap;
+    }
+    .card {
+        display: flex;
+        margin: 1rem;
+        width: 35rem;
+    }
+</style>
+{% endblock %}
