@@ -1,21 +1,22 @@
 from flask import Flask, render_template, redirect, url_for, request, session, flash, g, Blueprint, abort
+from jinja2 import TemplateNotFound
 from flask.json import jsonify
 from functools import wraps
 from flask.ext.sqlalchemy import SQLAlchemy
 import sqlite3
 
-from models import *
+from views.header import header
 
 app = Flask(__name__)
+
+app.register_blueprint(header.header)
 
 app.secret_key = "my precious"
 app.database = 'testjwz.db'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
 #app.config.from_object(os.environ['APP_SETTINGS'])
-
+from models import *
 db = SQLAlchemy(app)
-
-# from models import *
 
 def login_required(f):
     @wraps(f)
